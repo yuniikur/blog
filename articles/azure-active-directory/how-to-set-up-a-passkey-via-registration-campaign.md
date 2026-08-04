@@ -33,7 +33,7 @@ list_number: false
 ## 2. 事前準備
 パスキーを利用するには、[認証方法ポリシー](https://learn.microsoft.com/entra/identity/authentication/how-to-authentication-methods-manage#authentication-methods-policy)でパスキー (FIDO2) が有効化されており、対象ユーザーを含むグループがターゲットとして設定されている必要があります。
 管理者にて [Microsoft Entra 管理センター (entra.microsoft.com)] > [認証方法] > [ポリシー](https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/AdminAuthMethods/fromNav/) > [パスキー(FIDO2)] で有効化し、対象のユーザーを含むグループがターゲットに追加されていることを確認してください (下図のようにグループではなくすべてのユーザーを指定することもできます)。
-なお、[パスキー(FIDO2)] の [構成] タブで、既定で有効に設定される [セルフサービス設定を許可] を意図的に無効化されている場合は事前に有効化しておいてください (チェックが入っていると有効化されています)。
+なお、[パスキー(FIDO2)] の [構成] タブで、既定で有効に設定される [セルフサービス設定を許可] を意図的に無効化されている場合は本手順実施前に有効化しておいてください (チェックが入っていると有効化されています)。
 ![](./how-to-set-up-a-passkey-via-registration-campaign/registration-campaign01.png)
 
 
