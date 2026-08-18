@@ -1,6 +1,6 @@
 ---
 title: Microsoft Entra Connect のハードマッチの動作変更について
-date: 2026-03-30 12:00:00
+date: 2026-08-18 13:00:00
 tags:
   - Microsoft Entra Connect
 ---
@@ -225,6 +225,69 @@ Upcoming change – Microsoft Entra Connect security update to block hard match 
 MC1262584 は、管理者ロールを持つクラウドユーザーを標的としたハードマッチの試みをブロックするというもので、本ブログの内容とは別の通知となります。
  
 ---
+### <span style="color: blue; ">Q:</span> ハードマッチのセキュリティ強化の強制が適用されている際に、復旧などのシナリオで一時的に OnPremisesObjectIdentifier 属性の値を null にしなくてもハードマッチを実行することは可能ですか？
+ 
+<span style="color: red; ">A:</span>
+はい、テナント レベルの機能フラグ allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled を一時的に有効にして、ハードマッチを実行することが可能です。
+ 
+参考：ハード マッチの強制中に onPremisesObjectIdentifier の更新を許可する
+https://learn.microsoft.com/ja-jp/entra/identity/hybrid/connect/how-to-connect-syncservice-features#allow-onpremisesobjectidentifier-updates-during-hard-match-enforcement
+ 
+以下のような PowerShell コマンドを使用し、テナントにグローバル管理者でサインインして allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled フラグ (既定で False) を明示的に True にすることで、 OnPremisesObjectIdentifier 属性の値を null にしなくてもハードマッチを実行できます。
+ 
+```powershell
+Connect-MgGraph -Scope OnPremDirectorySynchronization.ReadWrite.All 
+$baseUri = "https://graph.microsoft.com/beta"
+$onPremSync = Get-MgDirectoryOnPremiseSynchronization
+$uri = "$baseUri/directory/onPremisesSynchronization/$($onPremSync.Id)"
+$params = @{
+    features = @{
+        allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled = $true
+    }
+}
+Invoke-MgGraphRequest -Method PATCH -Uri $uri -Body $params
+(Get-MgDirectoryOnPremiseSynchronization).Features | fl
+```
+ 
+また、このフラグを元の False に戻したい場合は、上記の PowerShell コマンドを allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled = $false に書き直して同様に実行することで、allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled フラグ を元の False に戻すことが可能です。
+ 
+参考：
+onPremisesObjectIdentifier の更新を一時的に許可する
+https://learn.microsoft.com/ja-jp/entra/identity/hybrid/connect/how-to-connect-install-existing-tenant#temporarily-allow-onpremisesobjectidentifier-updates
+ 
+ 
+実行例
+```PowerShell
+PS C:\Users\testuser> (Get-MgDirectoryOnPremiseSynchronization).Features | fl
+
+
+BlockCloudObjectTakeoverThroughHardMatchEnabled  : False
+BlockSoftMatchEnabled                            : False
+BypassDirSyncOverridesEnabled                    : False
+CloudPasswordPolicyForPasswordSyncedUsersEnabled : False
+ConcurrentCredentialUpdateEnabled                : False
+ConcurrentOrgIdProvisioningEnabled               : True
+DeviceWritebackEnabled                           : False
+DirectoryExtensionsEnabled                       : False
+FopeConflictResolutionEnabled                    : False
+GroupWriteBackEnabled                            : False
+PasswordSyncEnabled                              : True
+PasswordWritebackEnabled                         : False
+QuarantineUponProxyAddressesConflictEnabled      : True
+QuarantineUponUpnConflictEnabled                 : True
+SoftMatchOnUpnEnabled                            : True
+SynchronizeUpnForManagedUsersEnabled             : True
+UnifiedGroupWritebackEnabled                     : False
+UserForcePasswordChangeOnLogonEnabled            : False
+UserWritebackEnabled                             : False
+AdditionalProperties                             : {[allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled, True]}
+
+
+PS C:\Users\testuser> 
+```
+
+---
+
 
 
 ## 3.参考資料
