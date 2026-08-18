@@ -259,30 +259,31 @@ https://learn.microsoft.com/ja-jp/entra/identity/hybrid/connect/how-to-connect-i
 実行例
 ```PowerShell
 PS C:\Users\testuser> (Get-MgDirectoryOnPremiseSynchronization).Features | fl
-
-
-BlockCloudObjectTakeoverThroughHardMatchEnabled  : False
-BlockSoftMatchEnabled                            : False
-BypassDirSyncOverridesEnabled                    : False
-CloudPasswordPolicyForPasswordSyncedUsersEnabled : False
-ConcurrentCredentialUpdateEnabled                : False
-ConcurrentOrgIdProvisioningEnabled               : True
-DeviceWritebackEnabled                           : False
-DirectoryExtensionsEnabled                       : False
-FopeConflictResolutionEnabled                    : False
-GroupWriteBackEnabled                            : False
-PasswordSyncEnabled                              : True
-PasswordWritebackEnabled                         : False
-QuarantineUponProxyAddressesConflictEnabled      : True
-QuarantineUponUpnConflictEnabled                 : True
-SoftMatchOnUpnEnabled                            : True
-SynchronizeUpnForManagedUsersEnabled             : True
-UnifiedGroupWritebackEnabled                     : False
-UserForcePasswordChangeOnLogonEnabled            : False
-UserWritebackEnabled                             : False
-AdditionalProperties                             : {[allowOnPremUpdateOfOnPremisesObjectIdentifierEnabled, True]}
-
-
+ 
+ 
+AllowOnPremUpdateOfOnPremisesObjectIdentifierEnabled : False
+BlockCloudObjectTakeoverThroughHardMatchEnabled      : False
+BlockSoftMatchEnabled                                : False
+BypassDirSyncOverridesEnabled                        : False
+CloudPasswordPolicyForPasswordSyncedUsersEnabled     : False
+ConcurrentCredentialUpdateEnabled                    : False
+ConcurrentOrgIdProvisioningEnabled                   : True
+DeviceWritebackEnabled                               : True
+DirectoryExtensionsEnabled                           : True
+FopeConflictResolutionEnabled                        : False
+GroupWriteBackEnabled                                : False
+PasswordSyncEnabled                                  : True
+PasswordWritebackEnabled                             : False
+QuarantineUponProxyAddressesConflictEnabled          : True
+QuarantineUponUpnConflictEnabled                     : True
+SoftMatchOnUpnEnabled                                : True
+SynchronizeUpnForManagedUsersEnabled                 : True
+UnifiedGroupWritebackEnabled                         : False
+UserForcePasswordChangeOnLogonEnabled                : False
+UserWritebackEnabled                                 : False
+AdditionalProperties                                 : {}
+ 
+ 
 PS C:\Users\testuser> 
 ```
 
